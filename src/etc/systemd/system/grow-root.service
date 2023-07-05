@@ -1,0 +1,51 @@
+# To install:
+#     sudo cat grow-root.service > /etc/systemd/system/grow-root.service
+#     sudo systemctl daemon-reload
+#     sudo systemctl enable -f grow-root.service
+#
+# Start (auto disables after first successful expansion):
+#     sudo systemctl start grow-root.service
+#
+# Debugging:
+#     sudo systemctl status grow-root.service
+#     journalctl -fn 50 -u grow-root.service
+#
+# To uninstall:
+#     sudo systemctl disable -f grow-root.service
+
+[Unit]
+DefaultDependencies=no
+Description=Grow root file system
+Requires=local-fs.target
+After=local-fs.target
+
+[Service]
+Type=oneshot
+Environment="BIN_FS_RESIZER=/sbin/xfs_growfs"
+Environment="LVM_LV_ROOT=lv_root"
+Environment="LVM_VG_SYSTEM=vg_system"
+Environment="PARTITION_NUMBER=3"
+Environment="PARTITION_TYPE=p"
+Environment="PARTITION_TYPE_CODE=8e"
+ExecStart=-/bin/bash -c \
+  "if (( $(/bin/lsblk -lp --output NAME,SIZE | /bin/grep -E \"^$(/sbin/pvs --noheadings --separator ';' --units B -o lv_dm_path,pv_name | /bin/sed -re 's~[[:blank:]]~~g' -e 's~;~ ~g' | /bin/awk -v dm=\"$(/bin/sed -r -e '/^#/d' -e '/^[[:blank:]]*$/d' /etc/fstab | /bin/awk '/^[^[:blank:]]+[[:blank:]]\/[[:blank:]]/{print $1; exit}')\" '{if ($0 ~ dm){print $2; exit}}' | /bin/sed -r -e 's~p?[0-9]{1,3}$~~') \" | /bin/grep -Eo '[[:space:]][0-9]+' || printf -- '0') > $(( $(/bin/lsblk -lp --output NAME,SIZE | /bin/grep -E \"^$(/sbin/pvs --noheadings --separator ';' --units B -o lv_dm_path,pv_name | /bin/sed -re 's~[[:blank:]]~~g' -e 's~;~ ~g' | /bin/awk -v dm=\"$(/bin/sed -r -e '/^#/d' -e '/^[[:blank:]]*$/d' /etc/fstab | /bin/awk '/^[^[:blank:]]+[[:blank:]]\/[[:blank:]]/{print $1; exit}')\" '{if ($0 ~ dm){print $2; exit}}' | /bin/sed -r -e 's~p?[0-9]{1,3}$~~')p?1\" | /bin/grep -Eo '[[:space:]][0-9]+' || printf -- '0') + $(/bin/lsblk -lp --output NAME,SIZE | /bin/grep -m 1 \"^/dev/mapper/${LVM_VG_SYSTEM}-${LVM_LV_ROOT}\" | /bin/grep -Eo '[[:space:]][0-9]+' || printf -- '0') )) )); then \
+    printf -- 'Space free on root volume\\n'; \
+    if [[ -z $(/bin/lsblk -nplo TYPE,NAME | /bin/grep -E \"^part[[:blank:]]+$(/sbin/pvs --noheadings --separator ';' --units B -o lv_dm_path,pv_name | /bin/sed -re 's~[[:blank:]]~~g' -e 's~;~ ~g' | /bin/awk -v dm=\"$(/bin/sed -r -e '/^#/d' -e '/^[[:blank:]]*$/d' /etc/fstab | /bin/awk '/^[^[:blank:]]+[[:blank:]]\/[[:blank:]]/{print $1; exit}')\" '{if ($0 ~ dm){print $2; exit}}' | /bin/sed -r -e 's~p?[0-9]{1,3}$~~')p?${PARTITION_NUMBER}$\" | /bin/awk '{print $2; exit}') ]]; then \
+      printf -- 'Growing root volume...\\n'; \
+      printf -- 'n\\n%%s\\n%%s\\n\\n\\nt\\n%%s\\n%%s\\nw\\n' \
+        \"${PARTITION_TYPE}\" \
+        \"${PARTITION_NUMBER}\" \
+        \"${PARTITION_NUMBER}\" \
+        \"${PARTITION_TYPE_CODE}\" \
+        | /sbin/fdisk $(/sbin/pvs --noheadings --separator ';' --units B -o lv_dm_path,pv_name | /bin/sed -re 's~[[:blank:]]~~g' -e 's~;~ ~g' | /bin/awk -v dm=\"$(/bin/sed -r -e '/^#/d' -e '/^[[:blank:]]*$/d' /etc/fstab | /bin/awk '/^[^[:blank:]]+[[:blank:]]\/[[:blank:]]/{print $1; exit}')\" '{if ($0 ~ dm){print $2; exit}}' | /bin/sed -r -e 's~p?[0-9]{1,3}$~~'); \
+      /sbin/partprobe -s; \
+      /sbin/pvcreate $(/bin/lsblk -nplo TYPE,NAME | /bin/grep -E \"^part[[:blank:]]+$(/sbin/pvs --noheadings --separator ';' --units B -o lv_dm_path,pv_name | /bin/sed -re 's~[[:blank:]]~~g' -e 's~;~ ~g' | /bin/awk -v dm=\"$(/bin/sed -r -e '/^#/d' -e '/^[[:blank:]]*$/d' /etc/fstab | /bin/awk '/^[^[:blank:]]+[[:blank:]]\/[[:blank:]]/{print $1; exit}')\" '{if ($0 ~ dm){print $2; exit}}' | /bin/sed -r -e 's~p?[0-9]{1,3}$~~')p?${PARTITION_NUMBER}$\" | /bin/awk '{print $2; exit}'); \
+      /sbin/vgextend ${LVM_VG_SYSTEM} $(/bin/lsblk -nplo TYPE,NAME | /bin/grep -E \"^part[[:blank:]]+$(/sbin/pvs --noheadings --separator ';' --units B -o lv_dm_path,pv_name | /bin/sed -re 's~[[:blank:]]~~g' -e 's~;~ ~g' | /bin/awk -v dm=\"$(/bin/sed -r -e '/^#/d' -e '/^[[:blank:]]*$/d' /etc/fstab | /bin/awk '/^[^[:blank:]]+[[:blank:]]\/[[:blank:]]/{print $1; exit}')\" '{if ($0 ~ dm){print $2; exit}}' | /bin/sed -r -e 's~p?[0-9]{1,3}$~~')p?${PARTITION_NUMBER}$\" | /bin/awk '{print $2; exit}'); \
+      /sbin/lvextend /dev/${LVM_VG_SYSTEM}/${LVM_LV_ROOT} $(/bin/lsblk -nplo TYPE,NAME | /bin/grep -E \"^part[[:blank:]]+$(/sbin/pvs --noheadings --separator ';' --units B -o lv_dm_path,pv_name | /bin/sed -re 's~[[:blank:]]~~g' -e 's~;~ ~g' | /bin/awk -v dm=\"$(/bin/sed -r -e '/^#/d' -e '/^[[:blank:]]*$/d' /etc/fstab | /bin/awk '/^[^[:blank:]]+[[:blank:]]\/[[:blank:]]/{print $1; exit}')\" '{if ($0 ~ dm){print $2; exit}}' | /bin/sed -r -e 's~p?[0-9]{1,3}$~~')p?${PARTITION_NUMBER}$\" | /bin/awk '{print $2; exit}'); \
+      ${BIN_FS_RESIZER} /dev/${LVM_VG_SYSTEM}/${LVM_LV_ROOT}; \
+      /bin/systemctl disable -f grow-root.service; \
+    fi; \
+  fi"
+
+[Install]
+WantedBy=local-fs.target

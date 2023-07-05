@@ -1,0 +1,20 @@
+{
+  "build_accelerator": "kvm",
+  "build_iso_checksum": "4ce0948699a26f66dffd705c0459d428439cef02d5db43d36a6ae62ba494fe9e",
+  "build_iso_checksum_type": "sha256",
+  "build_iso_filename": "Rocky-8.8-x86_64-minimal.iso",
+  "build_iso_target_path": "isos/x86_64",
+  "build_name": "Rocky-8.8-x86_64-minimal-cloud-init-en_US",
+  "guest_bootloader_append": "net.ifnames=0 biosdevname=0 console=tty1 console=ttyS0,115200 no_timer_check",
+  "guest_hard_disk_size": "4096",
+  "guest_keyboard": "us",
+  "guest_language": "en_US.UTF-8",
+  "guest_pv_root_fstype": "xfs",
+  "guest_pv_root_mkfsoptions": "-i size=512 -n ftype=1 -m bigtime=0,inobtcount=0",
+  "guest_name": "Rocky-8.8-x86_64-minimal-cloud-init-en_US",
+  "guest_partition_boot_fstype": "xfs",
+  "guest_partition_boot_size": "0",
+  "guest_memory": "1024",
+  "guest_selinux": "permissive",
+  "guest_vg_system_reserved_space": "0"
+}

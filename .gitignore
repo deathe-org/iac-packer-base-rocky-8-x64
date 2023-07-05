@@ -1,0 +1,5 @@
+.vagrant/
+/builds/
+/isos/
+/packer_cache/
+/output-*/

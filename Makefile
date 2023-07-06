@@ -110,9 +110,9 @@ PACKER_BUILD_NAME := $(shell \
 		"$(BOX_LANG)"; \
 )
 PACKER_TEMPLATE_NAME := $(shell \
-	printf -- 'Rocky-8-%s-%s.json' \
-		"$(BOX_VARIANT)" \
-		"$(BOX_PROVIDER)"; \
+	printf -- 'provider/%s/Rocky-8-%s.json' \
+		"$(BOX_PROVIDER)" \
+		"$(BOX_VARIANT)"; \
 )
 PACKER_VAR_FILE := $(shell \
 	printf -- 'Rocky-%s-%s-%s-%s.json' \

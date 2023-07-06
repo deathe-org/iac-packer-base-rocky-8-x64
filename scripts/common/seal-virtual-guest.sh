@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+# Ref:
+# - https://access.redhat.com/solutions/5793031
+#
+
 /bin/echo '--> Sealing virtual-guest.'
 
 # Oracle Linux recommendation
@@ -27,6 +31,11 @@
 
 /bin/echo '---> Remove legacy network-scripts.'
 /bin/rm -rf /etc/sysconfig/network-scripts/*
+# /bin/rm -rf /etc/NetworkManager/system-connections/ens*.nmconnection
 
-/bin/echo '---> Removing machine-id.'
-  /bin/truncate --size 0 /etc/machine-id
+/bin/echo '---> Removing unique ID.'
+if [[ -h /var/lib/dbus/machine-id ]]
+then
+  /bin/rm -f /var/lib/dbus/machine-id
+fi
+/bin/echo "uninitialized" > /etc/machine-id

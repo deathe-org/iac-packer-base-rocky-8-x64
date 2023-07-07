@@ -22,7 +22,8 @@ stages:
 validate:
   stage: validate
   script:
-    - find . -maxdepth 1 -name '*.json' -print0 | xargs -t0n1 packer validate
+    # - find . -maxdepth 1 -name '*.json' -print0 | xargs -t0n1 packer validate
+    - find provider -name '*.pkr.hcl' -print0 | xargs -t0n1 packer validate
 
 build:
   stage: deploy

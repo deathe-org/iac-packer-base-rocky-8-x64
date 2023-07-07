@@ -12,7 +12,7 @@ image:
 
 before_script:
   - packer --version
-  - apk add --no-cache curl gzip make openssl qemu qemu-img qemu-system-x86_64 qemu-ui-gtk
+  - apk add --no-cache bash curl gzip make openssl qemu qemu-img qemu-system-x86_64 qemu-ui-gtk
 
 stages:
   - validate
@@ -37,7 +37,7 @@ build:
     # - BOX_VARIANT="minimal-cloud-init-lvm" make
     - BOX_VARIANT="minimal-vmi" make
     # - BOX_VARIANT="minimal-vmi-lvm" make
-    # - packer build -force -var-file=Rocky-8.8-x86_64-minimal-en_US.pkrvars.hcl provider/libvirt/Rocky-8-minimal.pkr.hcl
+    # - packer build -force -var-file=Rocky-8.8-x86_64-minimal-vmi-en_US.pkrvars.hcl provider/libvirt/Rocky-8-minimal-vmi.pkr.hcl
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual

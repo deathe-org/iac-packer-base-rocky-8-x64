@@ -30,12 +30,13 @@ build:
   environment: production
   script:
     # - find . -maxdepth 1 -name '*.json' -print0 | xargs -t0n1 packer build
-    - BOX_VARIANT="minimal" make
+    # - BOX_VARIANT="minimal" make
     # - BOX_VARIANT="minimal-lvm" make
-    - BOX_VARIANT="minimal-cloud-init" make
+    # - BOX_VARIANT="minimal-cloud-init" make
     # - BOX_VARIANT="minimal-cloud-init-lvm" make
-    - BOX_VARIANT="minimal-vmi" make
+    # - BOX_VARIANT="minimal-vmi" make
     # - BOX_VARIANT="minimal-vmi-lvm" make
+    - packer build -force -var-file=Rocky-8.8-x86_64-minimal-en_US.pkrvars.hcl provider/libvirt/Rocky-8.8-x86_64-minimal-en_US.pkr.hcl
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual

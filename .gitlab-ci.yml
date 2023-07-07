@@ -12,7 +12,7 @@ image:
 
 before_script:
   - packer --version
-  - apk add --no-cache make qemu qemu-img qemu-system-x86_64 qemu-ui-gtk
+  - apk add --no-cache curl gzip make openssl qemu qemu-img qemu-system-x86_64 qemu-ui-gtk
 
 stages:
   - validate
@@ -31,11 +31,11 @@ build:
   environment: production
   script:
     # - find . -maxdepth 1 -name '*.json' -print0 | xargs -t0n1 packer build
-    - BOX_VARIANT="minimal" make
+    # - BOX_VARIANT="minimal" make
     # - BOX_VARIANT="minimal-lvm" make
     # - BOX_VARIANT="minimal-cloud-init" make
     # - BOX_VARIANT="minimal-cloud-init-lvm" make
-    # - BOX_VARIANT="minimal-vmi" make
+    - BOX_VARIANT="minimal-vmi" make
     # - BOX_VARIANT="minimal-vmi-lvm" make
     # - packer build -force -var-file=Rocky-8.8-x86_64-minimal-en_US.pkrvars.hcl provider/libvirt/Rocky-8-minimal.pkr.hcl
   rules:

@@ -148,9 +148,9 @@ vboxmanage := $(shell type -p vboxmanage)
 	install
 
 _prerequisites:
-ifeq ($(vagrant),)
-	$(error "Please install Vagrant. (https://www.vagrantup.com)")
-endif
+# ifeq ($(vagrant),)
+# 	$(error "Please install Vagrant. (https://www.vagrantup.com)")
+# endif
 
 ifeq ($(packer),)
 	$(error "Please install Packer. (https://www.packer.io)")

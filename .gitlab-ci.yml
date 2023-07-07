@@ -12,6 +12,7 @@ image:
 
 before_script:
   - packer --version
+  - apk add --no-cache make qemu qemu-img qemu-system-x86_64 qemu-ui-gtk
 
 stages:
   - validate

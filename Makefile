@@ -110,12 +110,12 @@ PACKER_BUILD_NAME := $(shell \
 		"$(BOX_LANG)"; \
 )
 PACKER_TEMPLATE_NAME := $(shell \
-	printf -- 'provider/%s/Rocky-8-%s.json' \
+	printf -- 'provider/%s/Rocky-8-%s.pkr.hcl' \
 		"$(BOX_PROVIDER)" \
 		"$(BOX_VARIANT)"; \
 )
 PACKER_VAR_FILE := $(shell \
-	printf -- 'Rocky-%s-%s-%s-%s.json' \
+	printf -- 'Rocky-%s-%s-%s-%s.pkrvars.hcl' \
 		"$(BOX_VERSION_RELEASE)" \
 		"$(BOX_ARCH)" \
 		"$(BOX_VARIANT)" \

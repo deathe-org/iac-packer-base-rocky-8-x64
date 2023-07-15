@@ -184,11 +184,32 @@ variable "vagrantfile_template" {
   default = "Rocky-8.Vagrantfile"
 }
 
-# could not parse template for following block: "template: hcl2_upgrade:2: bad character U+0060 '`'"
-
 source "qemu" "build" {
-  accelerator        = "${var.build_accelerator}"
-  boot_command       = ["<esc><wait>", "linux inst.text inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/rocky-8-minimal.cfg", " BOOT_TIMEOUT=${var.guest_boot_timeout}", " BOOTLOADER_APPEND=\"${var.guest_bootloader_append}\"", " LANG=${var.guest_language}", " KEYTABLE=${var.guest_keyboard}", " TIMEZONE=${var.guest_timezone}", " ROOTPW=${var.ssh_root_password}", " FIREWALL_DISABLED=${var.guest_firewall_disabled}", " SELINUX=${var.guest_selinux}", " LV_ROOT_FSTYPE=${var.guest_lv_root_fstype}", " LV_ROOT_MKFSOPTIONS=\"${var.guest_lv_root_mkfsoptions}\"", " LV_ROOT_SIZE=${var.guest_lv_root_size}", " LV_SWAP_SIZE=${var.guest_lv_swap_size}", " PV_ROOT_FSTYPE=${var.guest_pv_root_fstype}", " PV_ROOT_MKFSOPTIONS=\"${var.guest_pv_root_mkfsoptions}\"", " PART_BOOT_FSTYPE=${var.guest_partition_boot_fstype}", " PART_BOOT_SIZE=${var.guest_partition_boot_size}", " VG_ROOT_RESERVED_SPACE=${var.guest_vg_system_reserved_space}", "<enter><wait>"]
+  accelerator = "${var.build_accelerator}"
+  boot_command = [
+    "<esc><wait>",
+    "linux",
+    " inst.text",
+    " inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/rocky-8-minimal.cfg",
+    " BOOT_TIMEOUT=${var.guest_boot_timeout}",
+    " BOOTLOADER_APPEND=\"${var.guest_bootloader_append}\"",
+    " LANG=${var.guest_language}",
+    " KEYTABLE=${var.guest_keyboard}",
+    " TIMEZONE=${var.guest_timezone}",
+    " ROOTPW=${var.ssh_root_password}",
+    " FIREWALL_DISABLED=${var.guest_firewall_disabled}",
+    " SELINUX=${var.guest_selinux}",
+    " LV_ROOT_FSTYPE=${var.guest_lv_root_fstype}",
+    " LV_ROOT_MKFSOPTIONS=\"${var.guest_lv_root_mkfsoptions}\"",
+    " LV_ROOT_SIZE=${var.guest_lv_root_size}",
+    " LV_SWAP_SIZE=${var.guest_lv_swap_size}",
+    " PV_ROOT_FSTYPE=${var.guest_pv_root_fstype}",
+    " PV_ROOT_MKFSOPTIONS=\"${var.guest_pv_root_mkfsoptions}\"",
+    " PART_BOOT_FSTYPE=${var.guest_partition_boot_fstype}",
+    " PART_BOOT_SIZE=${var.guest_partition_boot_size}",
+    " VG_ROOT_RESERVED_SPACE=${var.guest_vg_system_reserved_space}",
+    "<enter><wait>"
+  ]
   boot_key_interval  = "10ms"
   boot_wait          = "3s"
   disk_cache         = "unsafe"
@@ -227,11 +248,43 @@ build {
   }
 
   provisioner "shell" {
-    environment_vars = ["GUEST_LANG=${var.guest_language}", "LV_ROOT_FS_TYPE=${var.guest_lv_root_fstype}", "SSH_USER=${var.ssh_user}", "SSH_USER_AUTHORIZED_KEYS=${var.ssh_user_authorized_keys}", "SSH_USER_HOME=${var.ssh_user_home}", "SSH_USER_PASSWORD=${var.ssh_user_password}", "SSH_USER_SHELL=${var.ssh_user_shell}", "SSH_USER_SUDO=${var.ssh_user_sudo}", "PART_BOOT_SIZE=${var.guest_partition_boot_size}", "PV_ROOT_FSTYPE=${var.guest_pv_root_fstype}"]
-    execute_command  = "chmod +x \"{{ .Path }}\"; env {{ .Vars }} /bin/bash \"{{ .Path }}\""
-    remote_folder    = "/var/tmp"
-    scripts          = ["scripts/install/cloud-init.sh", "scripts/cloud-init/disable-locale-module.sh", "scripts/cloud-init/add-datasource-list.sh", "scripts/cloud-init/add-logging-output.sh", "scripts/cloud-init/add-preserve-hostname.sh", "scripts/common/disable-autovt.sh", "scripts/common/sshd-config-non-root-key-auth.sh", "scripts/common/sudoers-default-not-requiretty.sh", "scripts/common/ssh-user.sh", "scripts/common/seal-virtual-guest.sh", "scripts/common/locale-trim-definitions.sh", "scripts/common/locale-trim-translations.sh", "scripts/common/locale-lock-sysconfig.sh", "scripts/common/purge-desktop-graphics.sh", "scripts/common/purge-temporary-directories.sh", "scripts/common/dnf-cleanup.sh", "scripts/common/rpm-rebuild-db.sh", "scripts/common/stop-and-truncate-logs.sh", "scripts/common/zero-out-disks.sh", "scripts/common/lock-root-user.sh"]
-    skip_clean       = false
+    environment_vars = [
+      "GUEST_LANG=${var.guest_language}",
+      "LV_ROOT_FS_TYPE=${var.guest_lv_root_fstype}",
+      "SSH_USER=${var.ssh_user}",
+      "SSH_USER_AUTHORIZED_KEYS=${var.ssh_user_authorized_keys}",
+      "SSH_USER_HOME=${var.ssh_user_home}",
+      "SSH_USER_PASSWORD=${var.ssh_user_password}",
+      "SSH_USER_SHELL=${var.ssh_user_shell}",
+      "SSH_USER_SUDO=${var.ssh_user_sudo}",
+      "PART_BOOT_SIZE=${var.guest_partition_boot_size}",
+      "PV_ROOT_FSTYPE=${var.guest_pv_root_fstype}"
+    ]
+    execute_command = "chmod +x \"{{ .Path }}\"; env {{ .Vars }} /bin/bash \"{{ .Path }}\""
+    remote_folder   = "/var/tmp"
+    scripts = [
+      "scripts/install/cloud-init.sh",
+      "scripts/cloud-init/disable-locale-module.sh",
+      "scripts/cloud-init/add-datasource-list.sh",
+      "scripts/cloud-init/add-logging-output.sh",
+      "scripts/cloud-init/add-preserve-hostname.sh",
+      "scripts/common/disable-autovt.sh",
+      "scripts/common/sshd-config-non-root-key-auth.sh",
+      "scripts/common/sudoers-default-not-requiretty.sh",
+      "scripts/common/ssh-user.sh",
+      "scripts/common/seal-virtual-guest.sh",
+      "scripts/common/locale-trim-definitions.sh",
+      "scripts/common/locale-trim-translations.sh",
+      "scripts/common/locale-lock-sysconfig.sh",
+      "scripts/common/purge-desktop-graphics.sh",
+      "scripts/common/purge-temporary-directories.sh",
+      "scripts/common/dnf-cleanup.sh",
+      "scripts/common/rpm-rebuild-db.sh",
+      "scripts/common/stop-and-truncate-logs.sh",
+      "scripts/common/zero-out-disks.sh",
+      "scripts/common/lock-root-user.sh"
+    ]
+    skip_clean = false
   }
 
   post-processor "compress" {
@@ -241,8 +294,17 @@ build {
   }
   post-processor "shell-local" {
     execute_command = ["chmod +x \"{{ .Script }}\"; {{ .Vars }} /bin/bash \"{{ .Script }}\" ${var.vagrantfile_template}"]
-    inline          = ["if [[ ! -d output-tmp ]]; then", "   mkdir output-tmp", "fi", "if [[ -n $${1} ]] && [[ -f $${1} ]]; then", "  echo '--> Generating Vagrantfile template.'", "  cp -pf $${1} output-tmp/$${1}", "  sed -e 's~[{][{]user `ssh_user`[}][}]~${var.ssh_user}~g' output-tmp/$${1} > $${1}", "fi"]
-    inline_shebang  = "/bin/bash -e"
+    inline = [
+      "if [[ ! -d output-tmp ]]; then",
+      "   mkdir output-tmp",
+      "fi",
+      "if [[ -n $${1} ]] && [[ -f $${1} ]]; then",
+      "  echo '--> Generating Vagrantfile template.'",
+      "  cp -pf $${1} output-tmp/$${1}",
+      "  sed -e 's~[{][{]user `ssh_user`[}][}]~${var.ssh_user}~g' output-tmp/$${1} > $${1}",
+      "fi"
+    ]
+    inline_shebang = "/bin/bash -e"
   }
   post-processor "vagrant" {
     keep_input_artifact  = true
@@ -252,7 +314,14 @@ build {
   }
   post-processor "shell-local" {
     execute_command = ["chmod +x \"{{ .Script }}\"; {{ .Vars }} /bin/bash \"{{ .Script }}\" ${var.vagrantfile_template}"]
-    inline          = ["if [[ -n $${1} ]] && [[ -f output-tmp/$${1} ]]; then", "  echo '--> Restoring Vagrantfile template.'", "  mv -f output-tmp/$${1} $${1}", "fi", "echo '--> Cleanup output directories.'", "find . -mindepth 1 -maxdepth 1 -type d -name \"output-*\" -exec rm -rf '{}' +"]
-    inline_shebang  = "/bin/bash -e"
+    inline = [
+      "if [[ -n $${1} ]] && [[ -f output-tmp/$${1} ]]; then",
+      "  echo '--> Restoring Vagrantfile template.'",
+      "  mv -f output-tmp/$${1} $${1}",
+      "fi",
+      "echo '--> Cleanup output directories.'",
+      "find . -mindepth 1 -maxdepth 1 -type d -name \"output-*\" -exec rm -rf '{}' +"
+    ]
+    inline_shebang = "/bin/bash -e"
   }
 }

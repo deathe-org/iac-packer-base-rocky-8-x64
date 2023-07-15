@@ -39,7 +39,7 @@ build:
     # - BOX_VARIANT="minimal-vmi-lvm" make
     - mkdir -p isos/x86_64
     - curl --fail --location --silent --output ./isos/x86_64/Rocky-8.8-x86_64-minimal.iso https://dl.rockylinux.org/pub/rocky/8.8/isos/x86_64/Rocky-8.8-x86_64-minimal.iso
-    - packer build -force -var-file=Rocky-8.8-x86_64-minimal-vmi-en_US.pkrvars.hcl provider/libvirt/Rocky-8-minimal-vmi.pkr.hcl
+    - packer build -debug -force -var-file=Rocky-8.8-x86_64-minimal-vmi-en_US.pkrvars.hcl provider/libvirt/Rocky-8-minimal-vmi.pkr.hcl
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual

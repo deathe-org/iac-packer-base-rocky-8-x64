@@ -228,12 +228,11 @@ source "qemu" "build" {
   machine_type       = "q35"
   memory             = "${var.guest_memory}"
   net_device         = "virtio-net"
-  qemuargs           = [["-global", "virtio-pci.disable-modern=on"], ["-cpu", "host"]]
+  qemuargs           = [["-global", "virtio-pci.disable-modern=on"], ["-cpu", "host"], "-machine", "type=q35,accel=tcg"]
   shutdown_command   = "/sbin/shutdown --no-wall -P now"
   shutdown_timeout   = "1m"
   ssh_password       = "${var.ssh_root_password}"
   ssh_port           = 22
-  ssh_pty            = true
   ssh_username       = "root"
   ssh_wait_timeout   = "10m"
   vm_name            = "${var.guest_name}"

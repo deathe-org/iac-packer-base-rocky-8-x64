@@ -233,6 +233,7 @@ source "qemu" "build" {
   shutdown_timeout   = "1m"
   ssh_password       = "${var.ssh_root_password}"
   ssh_port           = 22
+  ssh_pty            = true
   ssh_username       = "root"
   ssh_wait_timeout   = "10m"
   vm_name            = "${var.guest_name}"

@@ -13,7 +13,7 @@ image:
 before_script:
   - packer --version
   - apk add --no-cache bash curl gzip make openssl qemu qemu-img qemu-system-x86_64 qemu-ui-gtk
-  - modprobe kvm-intel
+  # - modprobe kvm-intel
 
 stages:
   - validate

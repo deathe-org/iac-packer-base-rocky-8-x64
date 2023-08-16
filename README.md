@@ -11,12 +11,12 @@ There is currently no requirement to support older minor release versions or alt
 
 ### Prerequisites
 
-The build environment required is macOS or GNU Linux (Fedora 37) Intel x86_64.
+The build environment required is macOS or GNU Linux (Fedora 38) Intel x86_64.
 
-To build the box files you will need the following installed. Version numbers are those tested on Fedora 37.
+To build the box files you will need the following installed.
 
-- [VirtualBox](https://www.virtualbox.org) (7.0.4_rpmfusion)
-- [LibVirt](https://libvirt.org) (8.6.0)
+- [VirtualBox](https://www.virtualbox.org) (7.0.10_rpmfusion)
+- [LibVirt](https://libvirt.org) (9.0.0)
 - [Vagrant](https://www.vagrantup.com) (2.2.19)
 - [Packer](https://www.packer.io) (1.8.5)
 

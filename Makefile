@@ -44,7 +44,7 @@ Variables (default value):
 
 endef
 
-BOX_NAMESPACE := jdeathe
+BOX_NAMESPACE := org-deathe
 BOX_ARCH_PATTERN := ^x86_64$
 BOX_ARCH := x86_64
 

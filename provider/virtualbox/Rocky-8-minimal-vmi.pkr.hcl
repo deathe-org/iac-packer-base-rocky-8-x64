@@ -179,7 +179,7 @@ source "virtualbox-iso" "build" {
     "<esc><wait>",
     "linux",
     " inst.text",
-    " inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/rocky-8-minimal.cfg",
+    " inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/rockylinux-8-minimal.cfg",
     " BOOT_TIMEOUT=${var.guest_boot_timeout}",
     " BOOTLOADER_APPEND=\"${var.guest_bootloader_append}\"",
     " LANG=${var.guest_language}",
@@ -308,7 +308,7 @@ build {
     inline = [
       "if [[ -n $${1} ]] && [[ -n $${2} ]] && [[ -n $${PACKER_BUILD_NAME} ]] && [[ -d output-$${PACKER_BUILD_NAME} ]]; then",
       "  echo '--> Moving build artifact.'",
-      "  mv -f output-$${PACKER_BUILD_NAME}/${var.guest_name}.$${2} $${1}/$${PACKER_BUILD_NAME}.$${2}",
+      "  mv -f output-$${PACKER_BUILD_NAME}/${var.guest_name}.$${2} $${1}/${var.build_name}.$${2}",
       "fi",
       "echo '--> Cleanup output directories.'",
       "find . -mindepth 1 -maxdepth 1 -type d -name \"output-*\" -exec rm -rf '{}' +"

@@ -184,7 +184,7 @@ source "virtualbox-iso" "build" {
     "<esc><wait>",
     "linux",
     " inst.text",
-    " inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/rocky-8-minimal.cfg",
+    " inst.ks=http://{{.HTTPIP}}:{{.HTTPPort}}/rockylinux-8-minimal.cfg",
     " BOOT_TIMEOUT=${var.guest_boot_timeout}",
     " BOOTLOADER_APPEND=\"${var.guest_bootloader_append}\"",
     " LANG=${var.guest_language}",

@@ -1,4 +1,4 @@
-# Rocky-8 Minimal Base Box
+# Packer Build of Rocky Linux 8 x86_64 Base Vagrant Box and VM Image
 
 This provides the configuration and Makefile to build a [Vagrant](https://www.vagrantup.com) minimal base box using [Packer](https://www.packer.io). The base box is intended for server (terminal) use only so is restricted to a single locale (with `en_US` being the default) which allows for a smaller box size.
 

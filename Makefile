@@ -99,9 +99,7 @@ PREFIX_SUB_STEP_POSITIVE := $(shell \
 
 # Get absolute file paths
 BOX_OUTPUT_PATH := $(realpath $(BOX_OUTPUT_PATH))
-# BOX_VERSION_PATCH := $(shell \
-# 	awk 'BEGIN { FS="." } { print $$3 }' <<< $(BOX_VERSION_RELEASE); \
-# )
+
 PACKER_BUILD_NAME := $(shell \
 	printf -- 'Rocky-%s-%s-%s-%s' \
 		"$(BOX_VERSION_RELEASE)" \
